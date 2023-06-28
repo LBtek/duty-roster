@@ -11,7 +11,7 @@ export const employees = [
   'Renato'
 ]
 
-export const lastDaysWorked = {
+export const lastDaysWorkedEmp = {
   'Glaucia': 0, 
   'Maísa': 0,
   'Joriel': 0,
@@ -24,7 +24,7 @@ export const lastDaysWorked = {
 
 export const vocation = {
   'Glaucia': [
-    {'startDay': 27, 'startMonth': 'março', 'endDay': 5, 'endMonth': 'abril'}, 
+    {'startDay': 11, 'startMonth': 'abril', 'endDay': 20, 'endMonth': 'abril'}, 
     {'startDay': 21, 'startMonth': 'agosto', 'endDay': 30, 'endMonth': 'agosto'}
   ], 
   'Maísa': [
@@ -39,13 +39,10 @@ export const vocation = {
     {'startDay': 2, 'startMonth': 'maio', 'endDay': 16, 'endMonth': 'maio'}, 
     {'startDay': 21, 'startMonth': 'agosto', 'endDay': 4, 'endMonth': 'setembro'}
   ],
-  'Solange': [
-    {'startDay': 3, 'startMonth': 'abril', 'endDay': 22, 'endMonth': 'abril'}, 
-    {'startDay': 18, 'startMonth': 'dezembro', 'endDay': 31, 'endMonth': 'dezembro'}
-  ],
+  'Solange': [ ],
   'Juliano': [
     {'startDay': 8, 'startMonth': 'maio', 'endDay': 17, 'endMonth': 'maio'}, 
-    {'startDay': 27, 'startMonth': 'setembro', 'endDay': 6, 'endMonth': 'outubro'}
+    {'startDay': 2, 'startMonth': 'outubro', 'endDay': 11, 'endMonth': 'outubro'}
   ],
   'Rony': [
     {'startDay': 11, 'startMonth': 'setembro', 'endDay': 30, 'endMonth': 'setembro'}
@@ -57,43 +54,47 @@ export const vocation = {
 
 export const bailiffs = [
   'Idelson',
-  'Nilton', 
+  'Nilton',
   'Lourenço',
   'Ederson'
 ]
 
 export const lastDaysWorkedPO = {
   'Idelson': 0,
-  'Nilton': 0, 
+  'Nilton': 0,
   'Lourenço': 0,
   'Ederson': 0
 }
 
 export const vocationPO = {
   'Idelson': [
-    {'startDay': 26, 'startMonth': 'janeiro', 'endDay': 31, 'endMonth': 'janeiro'},
-    {'startDay': 1, 'startMonth': 'fevereiro', 'endDay': 28, 'endMonth': 'fevereiro'},
-    {'startDay': 1, 'startMonth': 'março', 'endDay': 31, 'endMonth': 'março'},
-    {'startDay': 1, 'startMonth': 'abril', 'endDay': 30, 'endMonth': 'abril'},
-    {'startDay': 1, 'startMonth': 'maio', 'endDay': 31, 'endMonth': 'maio'},
-    {'startDay': 1, 'startMonth': 'junho', 'endDay': 30, 'endMonth': 'junho'},
-    {'startDay': 1, 'startMonth': 'julho', 'endDay': 31, 'endMonth': 'julho'},
-    {'startDay': 1, 'startMonth': 'agosto', 'endDay': 31, 'endMonth': 'agosto'},
-    {'startDay': 1, 'startMonth': 'setembro', 'endDay': 30, 'endMonth': 'setembro'},
-    {'startDay': 1, 'startMonth': 'outubro', 'endDay': 31, 'endMonth': 'outubro'},
-    {'startDay': 1, 'startMonth': 'novembro', 'endDay': 30, 'endMonth': 'novembro'},
-    {'startDay': 1, 'startMonth': 'dezembro', 'endDay': 17, 'endMonth': 'dezembro'}
+    { 'startDay': 1, 'startMonth': 'fevereiro', 'endDay': 20, 'endMonth': 'março' },
+    { 'startDay': 21, 'startMonth': 'março', 'endDay': 12, 'endMonth': 'maio' },
+    { 'startDay': 20, 'startMonth': 'maio', 'endDay': 28, 'endMonth': 'junho' },
+    { 'startDay': 7, 'startMonth': 'junho', 'endDay': 28, 'endMonth': 'julho' },
+    { 'startDay': 7, 'startMonth': 'agosto', 'endDay': 28, 'endMonth': 'setembro' },
+    { 'startDay': 7, 'startMonth': 'outubro', 'endDay': 28, 'endMonth': 'novembro' },
+    { 'startDay': 7, 'startMonth': 'dezembro', 'endDay': 28, 'endMonth': 'dezembro' },
+    {},
+    {},
+    {},
+    {}
   ],
   'Nilton': [
-    {'startDay': 2, 'startMonth': 'maio', 'endDay': 31, 'endMonth': 'maio'}
+    {'startDay': 15, 'startMonth': 'maio', 'endDay': 29, 'endMonth': 'maio'},
+    {'startDay': 1, 'startMonth': 'agosto', 'endDay': 15, 'endMonth': 'agosto'}
   ],
   'Lourenço':  [
     {'startDay': 9, 'startMonth': 'janeiro', 'endDay': 18, 'endMonth': 'janeiro'},
-    {'startDay': 3, 'startMonth': 'julho', 'endDay': 12, 'endMonth': 'julho'},
+    {'startDay': 28, 'startMonth': 'agosto', 'endDay': 6, 'endMonth': 'setembro'},
     {'startDay': 18, 'startMonth': 'setembro', 'endDay': 17, 'endMonth': 'outubro'}
   ],
   'Ederson': [
-    {'startDay': 21, 'startMonth': 'agosto', 'endDay': 30, 'endMonth': 'agosto'},
-    {'startDay': 4, 'startMonth': 'dezembro', 'endDay': 13, 'endMonth': 'dezembro'}
-  ],
+    { 'startDay': 10, 'startMonth': 'março', 'endDay': 28, 'endMonth': 'abril' },
+    { 'startDay': 2, 'startMonth': 'maio', 'endDay': 28, 'endMonth': 'junho' },
+    { 'startDay': 7, 'startMonth': 'junho', 'endDay': 28, 'endMonth': 'julho' },
+    { 'startDay': 7, 'startMonth': 'agosto', 'endDay': 28, 'endMonth': 'setembro' },
+    { 'startDay': 7, 'startMonth': 'outubro', 'endDay': 28, 'endMonth': 'novembro' },
+    { 'startDay': 7, 'startMonth': 'dezembro', 'endDay': 28, 'endMonth': 'dezembro' }
+  ]
 }

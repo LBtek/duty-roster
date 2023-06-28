@@ -28,9 +28,7 @@ export function splitYear(year, startDate = '', endDate = '') {
         week[1] = rest
       }
 
-      weeksOnDuty[key] 
-        ? weeksOnDuty[key].push(week) 
-        : weeksOnDuty[key] = [week]
+      weeksOnDuty[key] = [week]
     }
 
     let firstWeek = startWeek - 1

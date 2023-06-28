@@ -1,9 +1,9 @@
 import { year, employees, bailiffs } from "../data/data.js"
 import { months, month as mnth } from "../helpers/helpers.js";
 
-let employee = 0, count = 0
+let employee = 0, count = 0, crash = false, beforeEmployees = []
 
-function update() {
+function update(employees) {
   if (employee === employees.length - 1) 
     employee = 0
   else employee++
@@ -11,17 +11,21 @@ function update() {
 
 function oldestShift(entries, employees) {
   let len = entries.length
-  let minEmp
-  let min = 99999
-  while( len-- ) {
-    if ( entries[len][1] < min ) {
-      min = entries[len][1]
-      minEmp = entries[len][0]
+  if (len) {
+    let minEmp
+    let min = 99999
+    while( len-- ) {
+      if ( entries[len][1] < min ) {
+        min = entries[len][1]
+        minEmp = entries[len][0]
+      }
     }
+    employee = employees.indexOf(minEmp)
+    return minEmp
   }
-  employee = employees.indexOf(minEmp)
-  return minEmp
 }
+
+let beforeEmp
 
 function isOn(startMonth, endMonth, startDay, endDay, month, week, employees, vocations, lastDaysWorkedEntries = null) {
   const week0 = week[0]
@@ -52,49 +56,56 @@ function isOn(startMonth, endMonth, startDay, endDay, month, week, employees, vo
     (start >= week0 && start <= week1) ||
     (end >= week0 && start <= week0)   
   ) {
-    if ( lastDaysWorkedEntries ) {
+    beforeEmployees.push(employee)
+
+    if ( lastDaysWorkedEntries && lastDaysWorkedEntries.length ) {
       let minEmp = oldestShift(lastDaysWorkedEntries, employees)
       let lastDaysWorkedEntries2 = lastDaysWorkedEntries.filter(e => e[0] !== minEmp)
       oldestShift(lastDaysWorkedEntries2, employees)
 
-      isOnVocation(month, week, vocations, employees, lastDaysWorkedEntries2)
+      if (!beforeEmployees.includes(employee)) 
+        isOnVocation(month, week, vocations, employees, lastDaysWorkedEntries2)
+      else 
+        crash = true
 
     } else {
-      update()
-      isOnVocation(month, week, vocations, employees)
+      update(employees)
+      if (!beforeEmployees.includes(employee)) 
+        isOnVocation(month, week, vocations, employees)
+      else 
+        crash = true
     }
+
+    beforeEmployees = []
   }
 }
 
-const bail = {}
-const empl = {}
+const bail = new Set()
+const empl = new Set()
 
-let len = bailiffs.length
-
-while(len) {
-  bail[bailiffs[len]] = len
-  len--
-}
-len = employees.length
-
-while(len) {
-  empl[employees[len]] = len
-  len--
-}
+bailiffs.forEach(b => bail.add(b))
+employees.forEach(e => empl.add(e))
 
 function getStartDay(startMonth, employeeName, vocation) {
   let subDays = 0
 
-  if (bail[employeeName]) 
+  if (bail.has(employeeName)) 
     subDays = 10
-  else if (empl[employeeName])
+  else if (empl.has(employeeName))
     subDays = 1
 
   let newStartDay = vocation.startDay - subDays
 
   if (newStartDay <= 0) {
     let newStartMonth = months[startMonth] - 1
-    newStartDay = new Date(year, newStartMonth, 0).getDate() + newStartDay
+    let yearStartVocation = year
+
+    if (newStartMonth <= 0) {
+      newStartMonth = 12
+      yearStartVocation = year - 1
+    } 
+    const lastDayMonth = new Date(yearStartVocation, newStartMonth, 0).getDate()
+    newStartDay = lastDayMonth + newStartDay
 
     return { startMonth: mnth[newStartMonth], startDay: newStartDay }
   }
@@ -102,6 +113,7 @@ function getStartDay(startMonth, employeeName, vocation) {
 }
 
 function isOnVocation(month, week, vocations, employees, lastDaysWorkedEntries = null) {
+  beforeEmp = employees[employee] 
   let employeeVocation = vocations[employees[employee]]
   let len = employeeVocation?.length || null
   
@@ -109,15 +121,17 @@ function isOnVocation(month, week, vocations, employees, lastDaysWorkedEntries =
     for (let i = 0; i < len; i++) {
       if (!week) continue
       const vocation = employeeVocation[i]     
-      let startDay = getStartDay(vocation.startMonth, employees[employee], vocation)
-      const startMonth = startDay.startMonth
-      startDay = startDay.startDay
+      const start = getStartDay(vocation.startMonth, employees[employee], vocation)
+      const { startMonth } = start
+      const { startDay } = start
       const endMonth = vocation.endMonth
       const endDay = vocation.endDay 
 
       isOn(startMonth, endMonth, startDay, endDay, month, week, employees, vocations, lastDaysWorkedEntries)
 
+      if (employees[employee] !== beforeEmp) break
     }
+    beforeEmp = null
   }
 }
 
@@ -133,23 +147,28 @@ async function addEmployeeOnDutyWeek(month, week, nextWeek, employees, vocations
 
   if ( weekNumberDays === 7 ) {
     isOnVocation(month, week, vocations, employees, lastDaysWorkedEntries)
-    week.push(employees[employee])
-    lastDaysWorked[employees[employee]] = parseInt(months[month] + '' + (week1 < 10 ? `0${week1}` : week1))
-
-    update()
+    if (crash) {
+      week.push('-----')
+      crash = false
+    } else {
+      week.push(employees[employee])
+      lastDaysWorked[employees[employee]] = parseInt(months[month] + '' + (week1 < 10 ? `0${week1}` : week1))
+    }
+    update(employees)
   } 
   else if ( count === 1 ) {
     count = 0
     week.push(repeated)
-    lastDaysWorked[repeated] = parseInt(months[month] + '' + (week1 < 10 ? `0${week1}` : week1))
-
-    update()
+    update(employees)
+    if (crash) crash = false
+    else lastDaysWorked[repeated] = parseInt(months[month] + '' + (week1 < 10 ? `0${week1}` : week1))
   } 
   else {
     isOnVocation(month, week, vocations, employees, lastDaysWorkedEntries)
     isOnVocation(month, nextWeek, vocations, employees, lastDaysWorkedEntries)
-    repeated = employees[employee]
-    week.push(employees[employee])
+    if (crash) repeated = '-----'
+    else repeated = employees[employee]
+    week.push(repeated)
     count++
   }
 }
