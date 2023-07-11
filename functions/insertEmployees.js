@@ -25,8 +25,6 @@ function oldestShift(entries, employees) {
   }
 }
 
-let beforeEmp
-
 function isOn(startMonth, endMonth, startDay, endDay, month, week, employees, vocations, lastDaysWorkedEntries = null) {
   const week0 = week[0]
   const week1 = week[1] || week0
@@ -113,8 +111,8 @@ function getStartDay(startMonth, employeeName, vocation) {
 }
 
 function isOnVocation(month, week, vocations, employees, lastDaysWorkedEntries = null) {
-  beforeEmp = employees[employee] 
-  let employeeVocation = vocations[employees[employee]]
+  const beforeEmp = employees[employee] 
+  const employeeVocation = vocations[employees[employee]]
   let len = employeeVocation?.length || null
   
   if ( len ) {
@@ -131,7 +129,6 @@ function isOnVocation(month, week, vocations, employees, lastDaysWorkedEntries =
 
       if (employees[employee] !== beforeEmp) break
     }
-    beforeEmp = null
   }
 }
 
