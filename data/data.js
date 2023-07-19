@@ -8,7 +8,8 @@ export const employees = [
   'Solange',
   'Juliano',
   'Rony',
-  'Renato'
+  'Renato',
+  'João Marcelo'
 ]
 
 export const lastDaysWorkedEmp = {
@@ -19,7 +20,8 @@ export const lastDaysWorkedEmp = {
   'Solange': 0,
   'Juliano': 0,
   'Rony': 0,
-  'Renato': 0
+  'Renato': 0,
+  'João Marcelo': 0
 }
 
 export const vocation = {
@@ -42,7 +44,10 @@ export const vocation = {
   'Solange': [ ],
   'Juliano': [
     {'startDay': 8, 'startMonth': 'maio', 'endDay': 17, 'endMonth': 'maio'}, 
-    {'startDay': 2, 'startMonth': 'outubro', 'endDay': 11, 'endMonth': 'outubro'}
+    {'startDay': 14, 'startMonth': 'junho', 'endDay': 29, 'endMonth': 'julho'},
+    {'startDay':30, 'startMonth': 'julho', 'endDay': 30, 'endMonth': 'setembro'},
+    {'startDay':1, 'startMonth': 'outubro', 'endDay': 15, 'endMonth': 'novembro'},
+    {'startDay':16, 'startMonth': 'novembro', 'endDay': 18, 'endMonth': 'dezembro'}
   ],
   'Rony': [
     {'startDay': 11, 'startMonth': 'setembro', 'endDay': 30, 'endMonth': 'setembro'}
@@ -50,6 +55,12 @@ export const vocation = {
   'Renato': [
     {'startDay': 9, 'startMonth': 'janeiro', 'endDay': 28, 'endMonth': 'janeiro'}
   ],
+  'João Marcelo': [
+    {'startDay':9, 'startMonth': 'janeiro', 'endDay': 28, 'endMonth': 'fevereiro'}, 
+    {'startDay':1, 'startMonth': 'março', 'endDay': 28, 'endMonth': 'abril'},
+    {'startDay':30, 'startMonth': 'abril', 'endDay': 30, 'endMonth': 'junho'},
+    {'startDay':1, 'startMonth': 'junho', 'endDay': 24, 'endMonth': 'julho'}
+  ]
 }
 
 export const bailiffs = [
