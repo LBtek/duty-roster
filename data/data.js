@@ -24,7 +24,7 @@ export const lastDaysWorkedEmp = {
   'João Marcelo': 0
 }
 
-export const vocation = {
+export const vacation = {
   'Glaucia': [
     {'startDay': 11, 'startMonth': 'abril', 'endDay': 20, 'endMonth': 'abril'}, 
     {'startDay': 21, 'startMonth': 'agosto', 'endDay': 30, 'endMonth': 'agosto'}
@@ -77,7 +77,7 @@ export const lastDaysWorkedPO = {
   'Ederson': 0
 }
 
-export const vocationPO = {
+export const vacationPO = {
   'Idelson': [
     { 'startDay': 1, 'startMonth': 'fevereiro', 'endDay': 20, 'endMonth': 'março' },
     { 'startDay': 21, 'startMonth': 'março', 'endDay': 12, 'endMonth': 'maio' },

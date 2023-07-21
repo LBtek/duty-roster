@@ -1,9 +1,9 @@
-import { year, employees, lastDaysWorkedEmp, lastDaysWorkedPO, vocation, vocationPO, bailiffs } from "./data/data.js"
+import { year, employees, lastDaysWorkedEmp, lastDaysWorkedPO, vacation, vacationPO, bailiffs } from "./data/data.js"
 import { insertEmployees } from "./functions/insertEmployees.js"
 import { splitYear } from "./functions/splitYear.js"
 
-const entries = insertEmployees(splitYear(year, '9-1', '17-12'), employees, lastDaysWorkedEmp, vocation)
-const entries2 = insertEmployees(splitYear(year, '9-1', '17-12'), bailiffs, lastDaysWorkedPO, vocationPO)
+const entries = insertEmployees(splitYear(year, '9-1', '17-12'), employees, lastDaysWorkedEmp, vacation)
+const entries2 = insertEmployees(splitYear(year, '9-1', '17-12'), bailiffs, lastDaysWorkedPO, vacationPO)
 
 const obj = {}
 

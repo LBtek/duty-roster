@@ -44,7 +44,7 @@ function oldestShift(entries, employees) {
   }
 }
 
-function isOn(startMonth, endMonth, startDay, endDay, month, week, employees, vocations, lastDaysWorkedEntries) {
+function isOn(startMonth, endMonth, startDay, endDay, month, week, employees, vacations, lastDaysWorkedEntries) {
   const week0 = week[0]
   const week1 = week[1] || week0
 
@@ -80,7 +80,7 @@ function isOn(startMonth, endMonth, startDay, endDay, month, week, employees, vo
       oldestShift(lastDaysWorkedEntries2, employees)
 
       if (!beforeEmployees.includes(employee)) 
-        isOnVocation(month, week, vocations, employees, lastDaysWorkedEntries2)
+        isOnVacation(month, week, vacations, employees, lastDaysWorkedEntries2)
       else 
         crash = true
 
@@ -88,7 +88,7 @@ function isOn(startMonth, endMonth, startDay, endDay, month, week, employees, vo
       consecutiveVacationEmployee.add(employees[employee])
       update(employees, lastDaysWorkedEntries)
       if (!beforeEmployees.includes(employee)) {
-        isOnVocation(month, week, vocations, employees, lastDaysWorkedEntries)
+        isOnVacation(month, week, vacations, employees, lastDaysWorkedEntries)
         consecutiveVacationEmployee = new Set()
       }
       else 
@@ -104,7 +104,7 @@ const empl = new Set()
 bailiffs.forEach(b => bail.add(b))
 employees.forEach(e => empl.add(e))
 
-function getStartDay(startMonth, employeeName, vocation) {
+function getStartDay(startMonth, employeeName, vacation) {
   let subDays = 0
 
   if (bail.has(employeeName)) 
@@ -112,17 +112,17 @@ function getStartDay(startMonth, employeeName, vocation) {
   else if (empl.has(employeeName))
     subDays = 1
 
-  let newStartDay = vocation.startDay - subDays
+  let newStartDay = vacation.startDay - subDays
 
   if (newStartDay <= 0) {
     let newStartMonth = months[startMonth] - 1
-    let yearStartVocation = year
+    let yearStartVacation = year
 
     if (newStartMonth <= 0) {
       newStartMonth = 12
-      yearStartVocation = year - 1
+      yearStartVacation = year - 1
     } 
-    const lastDayMonth = new Date(yearStartVocation, newStartMonth, 0).getDate()
+    const lastDayMonth = new Date(yearStartVacation, newStartMonth, 0).getDate()
     newStartDay = lastDayMonth + newStartDay
 
     return { startMonth: mnth[newStartMonth], startDay: newStartDay }
@@ -130,22 +130,22 @@ function getStartDay(startMonth, employeeName, vocation) {
   return { startMonth, startDay: newStartDay }
 }
 
-function isOnVocation(month, week, vocations, employees, lastDaysWorkedEntries) {
+function isOnVacation(month, week, vacations, employees, lastDaysWorkedEntries) {
   const beforeEmp = employees[employee] 
-  const employeeVocation = vocations[employees[employee]]
-  let len = employeeVocation?.length || null
+  const employeeVacation = vacations[employees[employee]]
+  let len = employeeVacation?.length || null
   
   if ( len ) {
     for (let i = 0; i < len; i++) {
       if (!week) continue
-      const vocation = employeeVocation[i]     
-      const start = getStartDay(vocation.startMonth, employees[employee], vocation)
+      const vacation = employeeVacation[i]     
+      const start = getStartDay(vacation.startMonth, employees[employee], vacation)
       const { startMonth } = start
       const { startDay } = start
-      const endMonth = vocation.endMonth
-      const endDay = vocation.endDay 
+      const endMonth = vacation.endMonth
+      const endDay = vacation.endDay 
 
-      isOn(startMonth, endMonth, startDay, endDay, month, week, employees, vocations, lastDaysWorkedEntries)
+      isOn(startMonth, endMonth, startDay, endDay, month, week, employees, vacations, lastDaysWorkedEntries)
 
       if (employees[employee] !== beforeEmp) break
     }
@@ -154,7 +154,7 @@ function isOnVocation(month, week, vocations, employees, lastDaysWorkedEntries) 
 
 let repeated
 
-async function addEmployeeOnDutyWeek(month, week, nextWeek, employees, vocations, lastDaysWorked, lastDaysWorkedEntries) {
+async function addEmployeeOnDutyWeek(month, week, nextWeek, employees, vacations, lastDaysWorked, lastDaysWorkedEntries) {
   let weekNumberDays
   let week1 = week[1] || week[0]
   if (week.length === 2)
@@ -163,7 +163,7 @@ async function addEmployeeOnDutyWeek(month, week, nextWeek, employees, vocations
     weekNumberDays = 1
 
   if ( weekNumberDays === 7 ) {
-    isOnVocation(month, week, vocations, employees, lastDaysWorkedEntries)
+    isOnVacation(month, week, vacations, employees, lastDaysWorkedEntries)
     if (crash) {
       week.push('-----')
       crash = false
@@ -187,8 +187,8 @@ async function addEmployeeOnDutyWeek(month, week, nextWeek, employees, vocations
     update(employees, entries)
   } 
   else {
-    isOnVocation(month, week, vocations, employees, lastDaysWorkedEntries)
-    isOnVocation(month, nextWeek, vocations, employees, lastDaysWorkedEntries)
+    isOnVacation(month, week, vacations, employees, lastDaysWorkedEntries)
+    isOnVacation(month, nextWeek, vacations, employees, lastDaysWorkedEntries)
     if (crash) repeated = '-----'
     else repeated = employees[employee]
     week.push(repeated)
@@ -196,7 +196,7 @@ async function addEmployeeOnDutyWeek(month, week, nextWeek, employees, vocations
   }
 }
 
-export function insertEmployees(yearSplited, employees, lastDaysWorked, vocations) {
+export function insertEmployees(yearSplited, employees, lastDaysWorked, vacations) {
   const entries = Object.entries(yearSplited)
   let fullcicle = false
 
@@ -208,10 +208,10 @@ export function insertEmployees(yearSplited, employees, lastDaysWorked, vocation
       const entries = Object.entries(lastDaysWorked)
       if ( fullcicle ) {
         oldestShift(entries, employees)
-        addEmployeeOnDutyWeek(month, weeks[j], weeks[j+1], employees, vocations, lastDaysWorked, entries)
+        addEmployeeOnDutyWeek(month, weeks[j], weeks[j+1], employees, vacations, lastDaysWorked, entries)
       } 
       else {
-        addEmployeeOnDutyWeek(month, weeks[j], weeks[j+1], employees, vocations, lastDaysWorked, entries)
+        addEmployeeOnDutyWeek(month, weeks[j], weeks[j+1], employees, vacations, lastDaysWorked, entries)
         fullcicle = Object.values(lastDaysWorked).every(e => e > 0)
       }
     }
